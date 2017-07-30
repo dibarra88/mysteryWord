@@ -1,0 +1,23 @@
+html {box-sizing:border-box;}
+*, *:before, *:after {box-sizing:inherit;}
+
+body {
+  margin:0 auto;
+  padding:0;
+  background-color: gray;
+  text-align: center;
+}
+
+h1 {
+  color:blue;
+}
+.err{
+  color:red;
+  font-size: 2.0em;
+}
+p{
+  font-size: 1.5em;
+}
+select{
+  width: 150px;
+}

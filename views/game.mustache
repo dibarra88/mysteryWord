@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mystery Word</title>
+    <link rel="stylesheet" href="/css/game.css" />
+</head>
+
+<body>
+    <header>
+        <div class="name">
+            <h2>Mystery Word</h2>
+        </div>
+        <div class="guesses">
+            <h2>You have {{guessesLeft}} guesses left.</h2>
+        </div>
+    </header>
+    <div class="container">
+        <div class="mysteryWord">
+            {{#wordArray}} {{#guessed}}
+            <span>{{letter}} </span> {{/guessed}} {{^guessed}}
+            <span class="guessed">{{letter}} </span> {{/guessed}} {{/wordArray}}
+        </div>
+        <div class='err'>
+            {{#error}}
+            <p>{{.}}</p>
+            {{/error}}
+        </div>
+        {{#status.playing}}
+        <p>Enter one letter at a time:
+        <form action='/game' method="post">
+            <input type="text" name="guess" maxlength="1" autocomplete="off" autofocus></input>
+            <button type="submit">Make a guess</button>
+        </form>
+        {{/status.playing}} {{#status.lost}}
+        <div>
+            <img src="/img/youlost.gif" alt="You Lost!"></img>
+            <form action='/startAgain' method="post">
+                <button type="submit" autofocus>Try Again</button>
+            </form>
+        </div>
+        {{/status.lost}} {{#status.win}}
+        <div>
+            <img src="/img/nice.gif" alt="You won!"></img><br /><br />
+            <form action='/record' method="post" enctype="multipart/form-data">
+                <div class="nameInput">
+                    <label for="userName">Enter Name: </label>
+                    <input type='text' name='userName' value="{{userName}}" placeholder="name" maxlength="15" autocomplete="off" autofocus></input>
+                </div>
+                <div class="fileUpload">
+                    {{^fileName}}
+                    <label for="file">Optional:</label>
+                    <input type='file' name='profileImage'></input>
+                    {{/fileName}} {{#fileName}}
+                    <p>Image saved: {{.}}</p>
+                    {{/fileName}}
+                </div>
+                <button type="submit">submit</button>
+
+            </form>
+        </div>
+        {{/status.win}}
+        <div class="letters">
+            <span>Letters guessed: </span> {{#guessArray}}
+            <span>{{.}}, </span> {{/guessArray}}
+        </div>
+
+    </div>
+</body>
+
+</html>

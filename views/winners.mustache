@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mystery</title>
+  <link rel="stylesheet" href="/css/winners.css" />
+</head>
+
+<body>
+  <h1>Mystery Word Hall of Fame</h1>
+  <form action='/startAgain' method="post">
+    <button type="submit" autofocus>Play Again</button>
+  </form>
+    <ul id="winners">
+        {{#winners}}
+        <li>
+            <div>
+            <img src="{{image}}" />
+            <span class="name">{{name}} </span>
+            <span>Mode: {{mode}}</span>
+            <span>Word: {{word}}</span>
+            <span>Guesses Left: {{guessesLeft}}</span>
+            </div>
+        </li>
+        {{/winners}}
+    </ul>
+</body>
+
+</html>
