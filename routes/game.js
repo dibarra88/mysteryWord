@@ -6,7 +6,7 @@ const router = express.Router();
 const os = require('os')
 const fs = require('fs')
 const path = require('path')
-const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
+//const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 const jsonfile = require('jsonfile')
 const file = './temp/data.json'
 const multer = require('multer')
@@ -42,26 +42,33 @@ const upload = multer({
 })
 
 router.get('/game', function (req, res, next) {
-    if(!req.session.word){          //if no active session then send to root
+    if (!req.session.word) {          //if no active session then send to root
         res.redirect('/')
     }
-    else{
-    res.render("game", req.session)
+    else {
+        res.render("game", req.session)
     }
 })
 router.post('/game', function (req, res, next) {
     req.session.error = "";
+
     if (req.body.guess.length !== 1) {
         req.session.error = "Enter one letter a time.";
         res.render("game", req.session)
     }
-    else if (req.session.guessArray.indexOf(req.body.guess.toLowerCase()) !== -1) { //check if letter was already guessed
-        req.session.error = "You already guessed " + req.body.guess;
-        res.render("game", req.session)
+    else if (/[a-zA-Z]/.test(req.body.guess)) {
+        if (req.session.guessArray.indexOf(req.body.guess.toLowerCase()) !== -1) { //check if letter was already guessed
+            req.session.error = "You already guessed " + req.body.guess;
+            res.render("game", req.session)
+        }
+        else {
+            checkGuessIsInWord(req.session, req.body.guess);
+            res.render('game', req.session)
+        }
     }
-    else {
-        checkGuessIsInWord(req.session, req.body.guess);
-        res.render('game', req.session)
+    else{
+        req.session.error = "Only Letters";
+        res.render("game", req.session)
     }
 })
 router.post('/startAgain', function (req, res, next) {
